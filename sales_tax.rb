@@ -1,26 +1,24 @@
 class SalesTax
   def receipt products
-    a = []
-    b = []
+    total_arr = []
+    sales_tax_arr = []
     amount = 0
     total_amount = 0
     products.each do |i|
       s = i.split
       qty = s[0].to_i
-      item = i.split(" at ")[0]
-      product = i.split(" at ")[0].delete("/0-9/")
-      product = product.split(' ').join(' ')
+      product = i.split(" at ")[0].delete("/0-9/").strip
       sales_tax, import_tax = tax(product)
       rate = s[-1].to_f
       amount = qty * rate
       total_after_sales_tax = amount * (1 + sales_tax)
       total_after_import_tax = total_after_sales_tax * (1 + import_tax) 
-      p "#{item}: #{total_after_import_tax.round(2)}"
-      a << total_after_import_tax
-      b << (total_after_import_tax - amount)
+      p "#{qty} #{product}: #{total_after_import_tax.round(2)}"
+      total_arr << total_after_import_tax
+      sales_tax_arr << (total_after_import_tax - amount)
     end
-    p "Sales Tax: " + b.inject{ |sum, x| (sum + x).round(2) }.to_s
-    p "Total: " + a.inject{ |sum, x| (sum + x).round(2) }.to_s  
+    p "Sales Tax: " + sales_tax_arr.inject{ |sum, x| (sum + x).round(2) }.to_s
+    p "Total: " + total_arr.inject{ |sum, x| (sum + x).round(2) }.to_s  
   end
 
   def tax(item)
