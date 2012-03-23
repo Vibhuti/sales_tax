@@ -6,8 +6,8 @@ describe "SalesTax" do
     @p2 = [ "1 book at 12.49", "1 music CD at 14.99", "1 chocolate bar at 0.85" ]
     @st = SalesTax.new
   end
-  it "Total Amount" do
-    @st.receipt(@p1).should == "Total: 65.36"
-    @st.receipt(@p2).should == "Total: 29.83"
-  end
+  # it "Total Amount" do
+  #   @st.receipt(@p1).should == "Total: 65.36"
+  #   @st.receipt(@p2).should == "Total: 29.83"
+  # end
 end
