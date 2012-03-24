@@ -9,4 +9,4 @@ Assumptions to test solution?
 2- Paste input into the input.txt file ( one by one)
 3- Check output from the command line by running the command: $ ruby sales_tax.rb
 4- To ensure rspec tests are working use: $ rake
-
+5- To check it online, use this link:  http://rubyfiddle.com/riddles/48fce/7
