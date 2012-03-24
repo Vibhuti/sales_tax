@@ -1,10 +1,10 @@
 class SalesTax
   
   IMPORT_TAX = 5.0
-  SALES_TAX = 10
+  SALES_TAX = 10.0
   CENTS_ROUNDING_MULTIPLIER = 20.0
   
-  def receipt(products)
+  def receipt(products = input)
     amount_arr = []
     tax_arr = []
     products.each do |i|      
@@ -15,8 +15,16 @@ class SalesTax
       tax_arr << tax_amount
       p "#{qty} #{product}: #{amount_with_tax}"
     end
-    p "Sales Tax: " +  sprintf( "%0.02f", (tax_arr.reduce{ |sum, x| (sum + x) }))
-    p "Total: " + sprintf( "%0.02f", (amount_arr.reduce{ |sum, x| (sum + x) })) 
+     total_amount, total_sales_tax = print_receipt(tax_arr, amount_arr)
+     return total_sales_tax, total_amount
+  end
+  
+  def print_receipt(tax_arr, amount_arr)
+    total_amount =  sprintf( "%0.02f", (amount_arr.reduce{ |sum, x| (sum + x) }))
+    total_sales_tax = sprintf( "%0.02f", (tax_arr.reduce{ |sum, x| (sum + x) }))
+    p "Sales Tax: " +  total_sales_tax
+    p "Total: " + total_amount
+    return total_amount, total_sales_tax
   end
   
   def parse_input(i)
@@ -36,30 +44,23 @@ class SalesTax
   
   def get_taxation_rates(product)
     zero_tax_items = ["book", "chocolate bar", "packet of headache pills", "box of imported chocolates", "imported box of chocolates"]
-    sales_tax_percentage = zero_tax_items.include?(product) ? 0.0 : (10.0/100)
-    import_duty_percentage = product.include?("imported") ? (5.0/100) : 0.0
+    sales_tax_percentage = zero_tax_items.include?(product) ? 0.0 : (SALES_TAX/100)
+    import_duty_percentage = product.include?("imported") ? (IMPORT_TAX/100) : 0.0
     return sales_tax_percentage, import_duty_percentage
   end
   
   def round_amount(amount)
-    ((amount * 20).round.to_f / 20).round(3)
+    ((amount * 20).round.to_f / CENTS_ROUNDING_MULTIPLIER).round(3)
   end
-end
-
-def calculate_sales_tax
   
-end
-
-def calculate_import_duty
+  def input
+    return a = File.open("./input.txt").readlines
+  end
   
 end
 
 st = SalesTax.new
-st.receipt [ "1 book at 12.49", "1 music CD at 14.99", "1 chocolate bar at 0.85" ]
-p "------------------------------------------------"
-st.receipt ["1 imported box of chocolates at 10.00", "1 imported bottle of perfume at 47.50"]
-p "------------------------------------------------"
-st.receipt ["1 imported bottle of perfume at 27.99", "1 bottle of perfume at 18.99", "1 packet of headache pills at 9.75", "1 box of imported chocolates at 11.25"]
+st.receipt
 
 
   # PROBLEM TWO: SALES TAXES
